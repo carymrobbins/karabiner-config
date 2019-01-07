@@ -1,0 +1,56 @@
+name:                karabiner-config
+version:             0.0.0.0
+github:              "carymrobbins/karabiner-config"
+license:             BSD3
+author:              "Cary Robbins"
+maintainer:          "carymrobbins@gmail.com"
+copyright:           "2019 Cary Robbins"
+
+extra-source-files:
+- README.md
+
+synopsis:            Karabiner elements configuration generation
+
+description:         Please see the README on GitHub at <https://github.com/carymrobbins/karabiner-config#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- aeson
+- aeson-pretty
+- bytestring
+- directory
+- text
+
+default-extensions:
+- DataKinds
+- FlexibleInstances
+- FunctionalDependencies
+- LambdaCase
+- MultiParamTypeClasses
+- OverloadedStrings
+- TypeOperators
+- UndecidableInstances
+
+ghc-options:
+- -Wall
+- -Werror
+
+library:
+  source-dirs: .
+
+tests:
+  karabiner-config-test:
+    main:                Test.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - karabiner-config
+    - file-embed
+    - hspec
+    - process
+    - temporary
+    default-extensions:
+    - TemplateHaskell
