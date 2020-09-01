@@ -1,3 +1,4 @@
+-- | Provides support for generating a Karabiner config via Haskell.
 module Karabiner.Config where
 
 import Prelude hiding (mod)
@@ -13,11 +14,11 @@ import GHC.TypeLits (ErrorMessage((:$$:)))
 
 import Karabiner.Config.Internal (prettyConfig, stripNulls)
 
--- | Builds a main function which outputs the given Root as JSON.
+-- | Builds a main function which outputs the given 'Root' as JSON.
 mkMain :: Root -> IO ()
 mkMain = LC.putStrLn . encodeRoot
 
--- | Encode a Root to a JSON lazy ByteString.
+-- | Encode a 'Root' to a JSON lazy ByteString.
 encodeRoot :: Root -> LC.ByteString
 encodeRoot root = encodePretty' prettyConfig root <> LC.pack "\n"
 
@@ -25,8 +26,8 @@ encodeRoot root = encodePretty' prettyConfig root <> LC.pack "\n"
 litPat :: Text -> Text
 litPat t = '^' `T.cons` (T.replace "." "\\." t) `T.snoc` '$'
 
--- | Represents a key binding of [a] modifiers (e.g. shift, control) and a key code.
--- The 'a' is polymorphic so we can make distinctions between PhysicalModifier
+-- | Represents a key binding of @[a]@ modifiers (e.g. shift, control) and a key code.
+-- The @a@ is polymorphic so we can make distinctions between PhysicalModifier
 -- and MetaModifier.
 data KeyBinding a = KeyBinding [a] KeyCode
 
@@ -35,13 +36,12 @@ singleKey :: KeyCode -> KeyBinding PhysicalModifier
 singleKey = KeyBinding []
 
 -- | Helper for a key binding sequence, only slightly prettier than using a list.
--- Later we can refactor this if we need to chain more than two; that will probably
--- require a type class.
 (|->) :: KeyBinding a -> KeyBinding a -> [KeyBinding a]
 x |-> y = [x, y]
 
 infix 5 |->
 
+-- | Type class for constructing a single key binding from multiple keys.
 class ToKeyBinding a b c | a b -> c where
   (|+|) :: a -> b -> KeyBinding c
   infix 6 |+|
@@ -58,11 +58,11 @@ instance ToKeyBinding MetaModifier KeyCode MetaModifier where
 instance ToKeyBinding [MetaModifier] KeyCode MetaModifier where
   mods |+| kc = KeyBinding mods kc
 
--- | Maps first KeyBinding to second KeyBinding
+-- | Maps first 'KeyBinding' to second 'KeyBinding'
 -- We can map physical modifiers to physical modifiers or meta modifiers
 -- to physical modifiers, but we can't (or rather, shouldn't) map
 -- any modifiers to meta modifiers; these type class instances enforce this.
--- We provide an instance for this via TypeError to provide nice error
+-- We provide an instance for this via 'TL.TypeError' to provide nice error
 -- messages.
 class ManipulatorBuilder a b where
   (!>) :: a -> b -> Manipulator
@@ -98,30 +98,39 @@ instance
   => ManipulatorBuilder a (KeyBinding MetaModifier) where
   (!>) = undefined
 
--- | Adds 'frontmost_application_if' condition to Manipulator
-(?) :: Manipulator -> [Text] -> Manipulator
-m ? ts = m { manipulatorConditions = cs }
+-- | Adds @frontmost_application_if@ condition to 'Manipulator'
+frontmostApplicationIf :: Manipulator -> [Text] -> Manipulator
+m `frontmostApplicationIf` ts = m { manipulatorConditions = cs }
   where
   c = ManipulatorCondition FrontmostApplicationIf ts
   cs = Just $ c : fromMaybe [] (manipulatorConditions m)
 
--- | Same as ? except updates a list of Manipulator
+-- | Alias for 'frontmostApplicationIf'
+(?) :: Manipulator -> [Text] -> Manipulator
+(?) = frontmostApplicationIf
+
+-- | Same as 'frontmostApplicationIf' except updates a list of 'Manipulator'
 (??) :: [Manipulator] -> [Text] -> [Manipulator]
 ms ?? ts = map (? ts) ms
 
--- | Adds 'frontmost_application_unless' condition to Manipulator
-(?!) :: Manipulator -> [Text] -> Manipulator
-m ?! ts = m { manipulatorConditions = cs }
+-- | Adds @frontmost_application_unless@ condition to 'Manipulator'
+frontmostApplicationUnless :: Manipulator -> [Text] -> Manipulator
+m `frontmostApplicationUnless` ts = m { manipulatorConditions = cs }
   where
   c = ManipulatorCondition FrontmostApplicationUnless ts
   cs = Just $ c : fromMaybe [] (manipulatorConditions m)
 
+-- | Alias for 'frontmostApplicationUnless'
+(?!) :: Manipulator -> [Text] -> Manipulator
+(?!) = frontmostApplicationUnless
+
 infix 3 ?!
 
--- | Same as ?! except updates a list of Manipulator
+-- | Same as '?!' except updates a list of 'Manipulator'
 (??!) :: [Manipulator] -> [Text] -> [Manipulator]
 ms ??! ts = map (?! ts) ms
 
+-- | Most top-level node of the karabiner config
 data Root = Root
   { rootTitle :: Text
   , rootRules :: [Rule]
@@ -131,6 +140,8 @@ instance ToJSON Root where
   toJSON (Root title rules) =
     object ["title" .= title, "rules" .= rules]
 
+-- |  A set of manupulations that can be enabled or disabled via the
+-- @Complex modifications@ section in the Karabiner UI.
 data Rule = Rule
   { ruleDescription :: Text
   , ruleManipulators :: [Manipulator]
@@ -140,6 +151,7 @@ instance ToJSON Rule where
   toJSON (Rule d ms) =
     object ["description" .= d, "manipulators" .= ms]
 
+-- | A configured key rebinding
 data Manipulator = Manipulator
   { manipulatorType :: ManipulatorType
   , manipulatorFrom :: ManipulatorFrom
