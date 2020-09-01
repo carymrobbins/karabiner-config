@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.31.1.
+-- This file has been generated from package.yaml by hpack version 0.31.2.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5b9ff99bba39fa05433e6f237ade42fe4d1d5c73bba7e8bab5177308047ba8a7
+-- hash: b35455e96fb6e71513397fd690aea6f79117d6559a7b71cb9b4b0a46a6f92ea6
 
 name:           karabiner-config
 version:        0.0.0.0
@@ -32,7 +32,7 @@ library
   other-modules:
       Paths_karabiner_config
   hs-source-dirs:
-      ./.
+      src
   default-extensions: DataKinds FlexibleInstances FunctionalDependencies LambdaCase MultiParamTypeClasses OverloadedStrings TypeOperators UndecidableInstances
   ghc-options: -Wall -Werror
   build-depends:
