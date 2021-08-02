@@ -4,17 +4,18 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 9b45b36778629065df078c0b1015fbf4e7d064f7e003a8f4487ac0b985e436f0
+-- hash: 03bdfd50270720093888bfc5bfd18a6e24de87440fd2bbac479a385614969ab3
 
 name:           karabiner-config
 version:        0.0.0.0
 synopsis:       Karabiner elements configuration generation
 description:    Please see the README on GitHub at <https://github.com/carymrobbins/karabiner-config#readme>
+category:       Configuration
 homepage:       https://github.com/carymrobbins/karabiner-config#readme
 bug-reports:    https://github.com/carymrobbins/karabiner-config/issues
 author:         Cary Robbins
 maintainer:     carymrobbins@gmail.com
-copyright:      2019 Cary Robbins
+copyright:      2021 Cary Robbins
 license:        BSD3
 license-file:   LICENSE
 build-type:     Simple
@@ -42,7 +43,7 @@ library
       OverloadedStrings
       TypeOperators
       UndecidableInstances
-  ghc-options: -Wall -Werror
+  ghc-options: -Wall
   build-depends:
       aeson
     , aeson-pretty
@@ -70,7 +71,7 @@ test-suite karabiner-config-test
       TypeOperators
       UndecidableInstances
       TemplateHaskell
-  ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
     , aeson-pretty

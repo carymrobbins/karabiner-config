@@ -4,12 +4,14 @@ github:              "carymrobbins/karabiner-config"
 license:             BSD3
 author:              "Cary Robbins"
 maintainer:          "carymrobbins@gmail.com"
-copyright:           "2019 Cary Robbins"
+copyright:           "2021 Cary Robbins"
 
 extra-source-files:
 - README.md
 
 synopsis:            Karabiner elements configuration generation
+
+category:            Configuration
 
 description:         Please see the README on GitHub at <https://github.com/carymrobbins/karabiner-config#readme>
 
@@ -33,7 +35,6 @@ default-extensions:
 
 ghc-options:
 - -Wall
-- -Werror
 
 library:
   source-dirs: src
