@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.31.2.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b35455e96fb6e71513397fd690aea6f79117d6559a7b71cb9b4b0a46a6f92ea6
+-- hash: 9b45b36778629065df078c0b1015fbf4e7d064f7e003a8f4487ac0b985e436f0
 
 name:           karabiner-config
 version:        0.0.0.0
@@ -33,7 +33,15 @@ library
       Paths_karabiner_config
   hs-source-dirs:
       src
-  default-extensions: DataKinds FlexibleInstances FunctionalDependencies LambdaCase MultiParamTypeClasses OverloadedStrings TypeOperators UndecidableInstances
+  default-extensions:
+      DataKinds
+      FlexibleInstances
+      FunctionalDependencies
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      TypeOperators
+      UndecidableInstances
   ghc-options: -Wall -Werror
   build-depends:
       aeson
@@ -52,7 +60,16 @@ test-suite karabiner-config-test
       Paths_karabiner_config
   hs-source-dirs:
       test
-  default-extensions: DataKinds FlexibleInstances FunctionalDependencies LambdaCase MultiParamTypeClasses OverloadedStrings TypeOperators UndecidableInstances TemplateHaskell
+  default-extensions:
+      DataKinds
+      FlexibleInstances
+      FunctionalDependencies
+      LambdaCase
+      MultiParamTypeClasses
+      OverloadedStrings
+      TypeOperators
+      UndecidableInstances
+      TemplateHaskell
   ghc-options: -Wall -Werror -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       aeson
